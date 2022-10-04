@@ -279,6 +279,11 @@ main (int argc, char **argv)
 	{
 		strncpy(username,argv[optind], sizeof(username));
 	}
+	else if ((arc - optind) == 2)
+	{
+		strncpy(username,argv[optind], sizeof(username));
+		strncpy(passwd,argv[optind+1], sizeof(passwd));
+	}
 	else
 	{
 		*username = '\0';
