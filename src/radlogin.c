@@ -279,7 +279,7 @@ main (int argc, char **argv)
 	{
 		strncpy(username,argv[optind], sizeof(username));
 	}
-	else if ((arc - optind) == 2)
+	else if ((argc - optind) == 2)
 	{
 		strncpy(username,argv[optind], sizeof(username));
 		strncpy(passwd,argv[optind+1], sizeof(passwd));
@@ -326,26 +326,28 @@ main (int argc, char **argv)
 
 	if (!maxtries)
 		maxtries = rc_conf_int(rh, "login_tries");
-
-	tries = 1;
-	while (tries <= maxtries)
+	if ((argc - optind) != 2)
 	{
-	 alarm(remaining);
+		tries = 1;
+		while (tries <= maxtries)
+		{
+		 alarm(remaining);
 
-	 while (!*username) {
-	 	p = rc_getstr (rh, SC_LOGIN, 1);
-	 	if (p)
-	 		strncpy(username, p, sizeof(username));
-	 	else
-	 		exit (ERROR_RC);
-	 }
-	 p = rc_getstr(rh, SC_PASSWORD,0);
-	 if (p)
-	 	strncpy (passwd, p, sizeof (passwd));
-	 else
-		exit (ERROR_RC);
-
-	 remaining = alarm(0);
+		 while (!*username) {
+			p = rc_getstr (rh, SC_LOGIN, 1);
+			if (p)
+				strncpy(username, p, sizeof(username));
+			else
+				exit (ERROR_RC);
+		 }
+		 p = rc_getstr(rh, SC_PASSWORD,0);
+		 if (p)
+			strncpy (passwd, p, sizeof (passwd));
+		 else
+			exit (ERROR_RC);
+			
+		 remaining = alarm(0);
+	}
 
 	 login_func = NULL;
 
